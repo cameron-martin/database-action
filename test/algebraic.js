@@ -6,7 +6,11 @@ import jsc from 'jsverify';
 
 import { DbAction } from '../index.js';
 
-const randomUnitDbAction = jsc.
+const arbitraryUnitDbAction = (contentArbitrary) => ({
+  generator: contentArbitrary.map(x => DbAction.of(x)),
+  shrink: jsc.shrink.bless(val => []),
+  show: val => 'Some DbAction'
+});
 
 suite('Algebraic properties', function() {
   suite('Functor', function() {
