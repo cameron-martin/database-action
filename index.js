@@ -20,9 +20,17 @@ export class DbAction<T> {
 
   constructor(action: (tx: Transaction<T>) => Promise<T>) {
     this._action = action;
+
+    Object.freeze(this);
   }
 
   execute(tx: Transaction<T>): Promise<T> {
     return this._action(tx);
+  }
+
+  map<R>(f: (x: T) => R): DbAction<R> {
+    return new DbAction(tx => {
+      return this.execute(tx).then(f);
+    });
   }
 }

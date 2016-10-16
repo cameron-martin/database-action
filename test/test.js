@@ -4,8 +4,9 @@ import { expect } from 'chai';
 import { suite, setup, test } from 'mocha';
 
 import { DbAction } from '../index.js';
+import type { Transaction } from '../index.js';
 
-function createTransaction() {
+function createTransaction<T>(): Transaction<T> {
   return {
     execute: sinon.stub()
   };
@@ -41,6 +42,7 @@ suite('DbAction', function() {
   test('DbAction created using fromQuery, when executed calls execute on transaction once, then returns the result', function() {
     const transaction = createTransaction();
     transaction.execute.returns(Promise.resolve('foo'));
+
     const dbAction = DbAction.fromQuery('SOME QUERY');
 
     return dbAction.execute(transaction).then(result => {
@@ -51,11 +53,18 @@ suite('DbAction', function() {
     });
   });
 
-  [
-    [DbAction.of.bind(DbAction), ],
-  ].forEach()
-  test('map transforms value correctly', function() {
+  test('map transforms result', function() {
+    const transaction = createTransaction();
+    const dbAction = DbAction.of(2).map(x => x * 2);
 
+    return dbAction.execute(transaction).then(result => {
+      expect(result).to.eq(4);
+    });
   });
 
+  test('it is immutable', function() {
+    const dbAction = DbAction.of(2);
+
+    expect(dbAction).to.be.frozen;
+  });
 });
