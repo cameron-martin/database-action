@@ -24,7 +24,6 @@ Working with WebSQL and IndexedDB is a bit of a nightmare, because:
 ## TODO
 
 * Set up greenkeeper.
-* Set up Travis CI.
 * Add pre-packaged "globals" builds.
 * Make the test's tsconfig.json work properly.
 * Finish the library.
