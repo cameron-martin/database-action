@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/cameron-martin/database-action.svg?branch=master)](https://travis-ci.org/cameron-martin/database-action)
+[![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](http://www.repostatus.org/badges/latest/wip.svg)](http://www.repostatus.org/#wip)
+[![dependencies Status](https://david-dm.org/cameron-martin/database-action/status.svg)](https://david-dm.org/cameron-martin/database-action)
+[![Join the chat at https://gitter.im/cameron-martin/database-action](https://badges.gitter.im/cameron-martin/database-action.svg)](https://gitter.im/cameron-martin/database-action?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 # database-action
 
 ## The problem
