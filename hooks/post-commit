@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+if [ -e .commit ]
+then
+    rm .commit
+    echo "Building output"
+    {
+      npm run build &&
+      git add dist/* &&
+      git commit --amend -C HEAD --no-verify
+    } || {
+      echo "Building failed, uncommitting"
+      git reset HEAD~1
+    }
+fi

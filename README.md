@@ -23,7 +23,6 @@ Working with WebSQL and IndexedDB is a bit of a nightmare, because:
 
 ## TODO
 
-* Set up commit hooks to build when committing.
 * Set up greenkeeper.
 * Set up Travis CI.
 * Update all npm packages.

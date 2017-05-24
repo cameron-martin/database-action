@@ -15,6 +15,7 @@
     "chai": "^3.5.0",
     "jsverify": "^0.8.2",
     "mocha": "^3.1.2",
+    "shared-git-hooks": "^1.2.1",
     "sinon": "^1.17.6",
     "ts-node": "^3.0.4",
     "typescript": "^2.3.3"
