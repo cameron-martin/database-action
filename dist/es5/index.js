@@ -30,6 +30,28 @@ var DbAction = exports.DbAction = function () {
                 return _this.execute(tx).then(f);
             });
         }
+    }, {
+        key: "ap",
+        value: function ap(f) {
+            var _this2 = this;
+
+            return new DbAction(function (tx) {
+                return f.execute(tx).then(function (f) {
+                    return _this2.execute(tx).then(f);
+                });
+            });
+        }
+    }, {
+        key: "chain",
+        value: function chain(f) {
+            var _this3 = this;
+
+            return new DbAction(function (tx) {
+                return _this3.execute(tx).then(function (t) {
+                    return f(t).execute(tx);
+                });
+            });
+        }
     }], [{
         key: "fromQuery",
         value: function fromQuery(query) {
@@ -43,6 +65,11 @@ var DbAction = exports.DbAction = function () {
             return new this(function (tx) {
                 return Promise.resolve(x);
             });
+        }
+    }, {
+        key: "of",
+        value: function of(x) {
+            return this.resolve(x);
         }
     }, {
         key: "reject",

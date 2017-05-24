@@ -8,8 +8,11 @@ export declare class DbAction<T> {
     private readonly _action;
     static fromQuery<T>(query: string): DbAction<T>;
     static resolve<T>(x: T): DbAction<T>;
+    static of<T>(x: T): DbAction<T>;
     static reject<T>(x: Error): DbAction<T>;
     constructor(action: (tx: Transaction) => Promise<T>);
     execute(tx: Transaction): Promise<T>;
     map<R>(f: (x: T) => R): DbAction<R>;
+    ap<U>(f: DbAction<(x: T) => U>): DbAction<U>;
+    chain<U>(f: (x: T) => DbAction<U>): DbAction<U>;
 }

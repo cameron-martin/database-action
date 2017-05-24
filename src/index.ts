@@ -17,6 +17,10 @@ export class DbAction<T> {
     return new this((tx) => Promise.resolve(x));
   }
 
+  static of<T>(x: T): DbAction<T> {
+    return this.resolve(x);
+  }
+
   static reject<T>(x: Error): DbAction<T> {
     return new DbAction<T>(tx => Promise.reject(x));
   }
@@ -34,6 +38,23 @@ export class DbAction<T> {
   map<R>(f: (x: T) => R): DbAction<R> {
     return new DbAction<R>(tx => {
       return this.execute(tx).then(f);
+    });
+  }
+
+  //ap :: Apply f => f a ~> f (a -> b) -> f b
+  ap<U>(f: DbAction<(x: T) => U>): DbAction<U> {
+    return new DbAction(tx => {
+      return f.execute(tx).then(f => {
+        return this.execute(tx).then(f);
+      });
+    });
+  }
+
+  chain<U>(f: (x: T) => DbAction<U>): DbAction<U> {
+    return new DbAction<U>(tx => {
+      return this.execute(tx).then(t => {
+        return f(t).execute(tx);
+      });
     });
   }
 }
