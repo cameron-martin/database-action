@@ -1,5 +1,7 @@
 # database-action
 
+[![Join the chat at https://gitter.im/cameron-martin/database-action](https://badges.gitter.im/cameron-martin/database-action.svg)](https://gitter.im/cameron-martin/database-action?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## The problem
 
 Working with WebSQL and IndexedDB is a bit of a nightmare, because:
