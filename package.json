@@ -33,6 +33,7 @@
   },
   "keywords": [
     "websql",
+    "indexeddb",
     "database",
     "monad"
   ],
