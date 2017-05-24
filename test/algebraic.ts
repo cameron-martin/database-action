@@ -1,19 +1,18 @@
-// @flow
-import sinon from 'sinon';
+/// <reference types="node" />
+
+import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { suite, setup, test } from 'mocha';
-import jsc from 'jsverify';
+import * as jsc from 'jsverify';
 
-import { DbAction } from '../index.js';
-import type { Transaction } from '../index.js';
+import { DbAction, Transaction } from '../';
 
-const arbitraryUnitDbAction = (contentArbitrary) => ({
-  generator: contentArbitrary.generator.map(x => DbAction.of(x)),
-  shrink: jsc.shrink.bless(val => []),
-  show: val => 'Some DbAction'
+const arbitraryUnitDbAction = <T>(contentArbitrary: jsc.Arbitrary<T>) => jsc.bless({
+  generator: contentArbitrary.generator.map(x => DbAction.resolve(x)),
+  shrink: jsc.shrink.bless<DbAction<T>>(val => []),
+  show: (val: DbAction<T>) => 'Some DbAction'
 });
 
-const fakeTransaction: Transaction<any> = {
+const fakeTransaction: Transaction = {
   execute: () => Promise.resolve(1)
 }
 
@@ -34,14 +33,14 @@ const dbActionArbitrary = arbitraryUnitDbAction(jsc.number);
 suite('Algebraic properties', function() {
   suite('Functor', function() {
     test('identity', function() {
-      jsc.assert(jsc.forall(dbActionArbitrary, function(dbAction) {
+      return jsc.assert(jsc.forall(dbActionArbitrary, function(dbAction) {
         return dbActionEquivalent(dbAction.map(x => x), dbAction);
       }));
     });
 
     test('composition', function() {
-      jsc.assert(jsc.forall(dbActionArbitrary, jsc.fn(jsc.number), jsc.fn(jsc.number), function(dbAction, f, g) {
-        return dbActionEquivalent(dbAction.map(f).map(g), dbAction.map(x => f(g(x))));
+      return jsc.assert(jsc.forall(dbActionArbitrary, jsc.fn(jsc.number), jsc.fn(jsc.number), function(dbAction, f, g) {
+        return dbActionEquivalent(dbAction.map(f).map(g), dbAction.map(x => g(f(x))));
       }));
     });
   });

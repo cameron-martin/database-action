@@ -1,19 +1,24 @@
-// @flow
-import sinon from 'sinon';
+import * as sinon from 'sinon';
 import { expect } from 'chai';
-import { suite, setup, test } from 'mocha';
+// import { suite, setup, test } from 'mocha';
 
-import { DbAction } from '../index.js';
-import type { Transaction } from '../index.js';
+import { DbAction, Transaction } from '../';
 
-function createTransaction<T>(): Transaction<T> {
+
+function createTransaction<T>() {
   return {
     execute: sinon.stub()
   };
 }
 
-function cartesianProduct(a) { // a = array of array
-    var i, j, l, m, a1, o = [];
+function cartesianProduct<T>(a: T[][]) {
+    var i: number,
+        j: number,
+        l: number,
+        m: number,
+        a1: T[],
+        o: T[][] = [];
+
     if (!a || a.length == 0) return a;
 
     a1 = a.splice(0, 1)[0]; // the first array of a
@@ -29,9 +34,9 @@ function cartesianProduct(a) { // a = array of array
 
 suite('DbAction', function() {
   [1, {}, 'something'].forEach(x => {
-    test('values created using .of execute to the correct value (' + JSON.stringify(x) + ')', function() {
+    test('values created using .resolve execute to the correct value (' + JSON.stringify(x) + ')', function() {
       const transaction = createTransaction();
-      const dbAction = DbAction.of(x);
+      const dbAction = DbAction.resolve(x);
 
       return dbAction.execute(transaction).then(result => {
         expect(result).to.eq(x);
@@ -55,7 +60,7 @@ suite('DbAction', function() {
 
   test('map transforms result', function() {
     const transaction = createTransaction();
-    const dbAction = DbAction.of(2).map(x => x * 2);
+    const dbAction = DbAction.resolve(2).map(x => x * 2);
 
     return dbAction.execute(transaction).then(result => {
       expect(result).to.eq(4);
@@ -63,7 +68,7 @@ suite('DbAction', function() {
   });
 
   test('it is immutable', function() {
-    const dbAction = DbAction.of(2);
+    const dbAction = DbAction.resolve(2);
 
     expect(dbAction).to.be.frozen;
   });
