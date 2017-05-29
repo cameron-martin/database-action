@@ -5,6 +5,8 @@
 
 # database-action
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/cameron-martin/database-action.svg)](https://greenkeeper.io/)
+
 ## The problem
 
 Working with WebSQL and IndexedDB is a bit of a nightmare, because:
